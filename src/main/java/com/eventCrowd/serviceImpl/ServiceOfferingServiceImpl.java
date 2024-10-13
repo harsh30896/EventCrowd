@@ -3,7 +3,6 @@ package com.eventCrowd.serviceImpl;
 import com.eventCrowd.entity.ServiceOffering;
 import com.eventCrowd.service.ServiceOfferingService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
