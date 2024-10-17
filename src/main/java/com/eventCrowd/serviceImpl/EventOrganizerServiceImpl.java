@@ -1,16 +1,23 @@
 package com.eventCrowd.serviceImpl;
 
 import com.eventCrowd.entity.EventOrganizer;
+import com.eventCrowd.repository.EventOrganizerRepo;
 import com.eventCrowd.service.EventOrganizerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class EventOrganizerServiceImpl implements EventOrganizerService {
+
+    @Autowired
+    EventOrganizerRepo eventOrganizerRepo;
+
     @Override
     public EventOrganizer createEvent(EventOrganizer event) {
-        return null;
+            EventOrganizer eventOrganizer=eventOrganizerRepo.save(event);
+            return eventOrganizer;
     }
 
     @Override

@@ -1,20 +1,30 @@
 package com.eventCrowd.serviceImpl;
-
 import com.eventCrowd.entity.ServiceOffering;
+import com.eventCrowd.repository.ServiceOfferingRepo;
 import com.eventCrowd.service.ServiceOfferingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceOfferingServiceImpl implements ServiceOfferingService {
+
+    @Autowired
+    ServiceOfferingRepo serviceOfferingRepo;
+
     @Override
     public ServiceOffering createServiceOffering(ServiceOffering serviceOffering) {
-        return null;
+            return serviceOfferingRepo.save(serviceOffering);
     }
 
     @Override
-    public ServiceOffering getServiceById(Long serviceId) {
-        return null;
+    public Optional<ServiceOffering> getServiceById(Long serviceId) {
+      Optional<ServiceOffering> serviceOffering = serviceOfferingRepo.findById(serviceId);
+      if(serviceOffering.isPresent()){
+          return serviceOffering;
+      }
+      return null;
     }
 
     @Override
