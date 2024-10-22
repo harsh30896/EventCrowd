@@ -1,6 +1,7 @@
 package com.eventCrowd.entity;
 
 import com.eventCrowd.enums.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,18 +15,18 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
 
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId; // UserId is used instead of id
+    private Long userId;
 
     private String name;
     private String email;
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; // Role enum defined as SERVICE_PROVIDER or CLIENT
+    private Role role;
 
     // One user (client) can organize multiple events
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL)
@@ -33,6 +34,7 @@ public class User {
 
     // One user (service provider) can offer multiple services
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ServiceOffering> servicesOffered;
 }
 

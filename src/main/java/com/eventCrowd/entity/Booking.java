@@ -1,5 +1,6 @@
 package com.eventCrowd.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,13 +21,15 @@ public class Booking {
     private String status;
     private LocalDate bookingDate;
 
-    // Many bookings for one event organizer (event)
+    // Many bookings are associated with one event organizer
     @ManyToOne
     @JoinColumn(name = "eventId")
+  //  @JsonBackReference
     private EventOrganizer eventOrganizer;
 
-    // Many bookings for one service offering
+    // Many bookings are associated with one service offering
     @ManyToOne
     @JoinColumn(name = "serviceOfferingId")
+ //   @JsonBackReference
     private ServiceOffering serviceOffering;
 }

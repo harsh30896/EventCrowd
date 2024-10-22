@@ -11,15 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/Booking")
+@RequestMapping("/api/v1/booking")
 public class BookingController {
 
     @Autowired
     BookingService bookingService;
 
     @PostMapping("/createBooking")
-    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking){
-        Booking booking1 = bookingService.createBooking(booking);
-        return new ResponseEntity<>(booking1, HttpStatus.CREATED);
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking) {
+        try {
+            Booking createdBooking = bookingService.createBooking(booking);
+            return new ResponseEntity<>(createdBooking, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while creating the booking.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -1,11 +1,11 @@
 package com.eventCrowd.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,23 +16,19 @@ import java.util.List;
 @Entity
 public class EventOrganizer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long eventId;
     private String title;
     private String location;
     private LocalDate eventDate;
     private Double budget;
-
-    // Many events can be created by a single client (User)
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User organizer; // Client (user) who organizes the event
-
-    // Many-to-Many relationship with EventService
+    @JsonBackReference
+    private User organizer;
     @ManyToMany
     @JoinTable(name = "event_services",
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "serviceId"))
-    private List<ServiceOffering> services; // Services used in this event
+    private List<ServiceOffering> services;
 }
-

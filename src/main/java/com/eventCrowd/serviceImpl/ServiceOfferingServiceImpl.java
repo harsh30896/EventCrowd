@@ -1,6 +1,8 @@
 package com.eventCrowd.serviceImpl;
 import com.eventCrowd.entity.ServiceOffering;
+import com.eventCrowd.entity.User;
 import com.eventCrowd.repository.ServiceOfferingRepo;
+import com.eventCrowd.repository.UserRepo;
 import com.eventCrowd.service.ServiceOfferingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,18 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     @Autowired
     ServiceOfferingRepo serviceOfferingRepo;
 
+    @Autowired
+    UserRepo userRepo;
+
     @Override
-    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering) {
-            return serviceOfferingRepo.save(serviceOffering);
+    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering, Long userId) {
+        Optional<User> serviceProviderOpt = userRepo.findById(userId);
+        if (serviceProviderOpt.isPresent()) {
+            serviceOffering.setServiceProvider(serviceProviderOpt.get());
+        } else {
+            throw new RuntimeException("User not found");
+        }
+        return serviceOfferingRepo.save(serviceOffering);
     }
 
     @Override
@@ -39,7 +50,8 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
 
     @Override
     public List<ServiceOffering> getAllServiceOfferings() {
-        return List.of();
+        List<ServiceOffering> serviceOfferings = serviceOfferingRepo.findAll();
+        return serviceOfferings;
     }
 
     @Override

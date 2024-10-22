@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EventOrganizerService {
 
-    EventOrganizer createEvent(EventOrganizer event);
+    EventOrganizer createEvent(EventOrganizer event,Long userId);
 
     EventOrganizer getEventById(Long eventId);
 

@@ -1,9 +1,18 @@
 package com.eventCrowd.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServiceOffering {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,9 +21,10 @@ public class ServiceOffering {
     private String description;
     private Double price;
 
-    // Many services can be provided by one service provider (User)
+    // One service can be provided by one service provider (User)
     @ManyToOne
-    @JoinColumn(name = "userId") // Reference to the service provider user
+    @JoinColumn(name = "userId")
+    @JsonBackReference // Prevents infinite recursion
     private User serviceProvider;
 
     // Many-to-Many relationship with EventOrganizer
