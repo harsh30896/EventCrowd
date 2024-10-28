@@ -31,4 +31,9 @@ public class EventOrganizer {
             joinColumns = @JoinColumn(name = "eventId"),
             inverseJoinColumns = @JoinColumn(name = "serviceId"))
     private List<ServiceOffering> services;
+
+    @OneToMany(mappedBy = "eventOrganizer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Booking> bookings;
+
+
 }

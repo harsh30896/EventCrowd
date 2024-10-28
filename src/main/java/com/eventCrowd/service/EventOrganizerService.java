@@ -2,25 +2,17 @@ package com.eventCrowd.service;
 
 import com.eventCrowd.entity.EventOrganizer;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface EventOrganizerService {
 
-    EventOrganizer createEvent(EventOrganizer event,Long userId);
+    EventOrganizer createEvent(EventOrganizer event);
 
-    EventOrganizer getEventById(Long eventId);
+    Optional<EventOrganizer> getEventById(Long eventId);
 
     EventOrganizer updateEvent(Long eventId, EventOrganizer eventDetails);
 
-    void deleteEvent(Long eventId);
+    boolean deleteEvent(Long eventId);
 
-    List<EventOrganizer> getAllEvents();
 
-    List<EventOrganizer> getEventsByOrganizer(Long userId);
-
-    EventOrganizer addServicesToEvent(Long eventId, List<Long> serviceIds);
-
-    EventOrganizer removeServiceFromEvent(Long eventId, Long serviceId);
-
-    List<EventOrganizer> getEventsByServiceProvider(Long serviceProviderId);
 }

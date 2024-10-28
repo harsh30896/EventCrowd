@@ -17,16 +17,8 @@ public class ServiceOfferingController {
     ServiceOfferingService serviceOfferingService;
 
     @PostMapping("/createService")
-    public ResponseEntity<ServiceOffering> createServiceOffering(@RequestBody Map<String, Object> serviceOfferingRequest) {
-        String name = (String) serviceOfferingRequest.get("name");
-        String description = (String) serviceOfferingRequest.get("description");
-        Double price = Double.valueOf(serviceOfferingRequest.get("price").toString());
-        Long userId = Long.valueOf(serviceOfferingRequest.get("userId").toString());
-        ServiceOffering serviceOffering = new ServiceOffering();
-        serviceOffering.setName(name);
-        serviceOffering.setDescription(description);
-        serviceOffering.setPrice(price);
-        ServiceOffering createdServiceOffering = serviceOfferingService.createServiceOffering(serviceOffering, userId);
+    public ResponseEntity<ServiceOffering> createServiceOffering(@RequestBody ServiceOffering serviceOffering) {
+        ServiceOffering createdServiceOffering = serviceOfferingService.createServiceOffering(serviceOffering);
         return new ResponseEntity<>(createdServiceOffering, HttpStatus.CREATED);
     }
 

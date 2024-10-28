@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDate;
 
 @Getter
@@ -22,9 +26,8 @@ public class Booking {
     private LocalDate bookingDate;
 
     // Many bookings are associated with one event organizer
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "eventId")
-  //  @JsonBackReference
     private EventOrganizer eventOrganizer;
 
     // Many bookings are associated with one service offering

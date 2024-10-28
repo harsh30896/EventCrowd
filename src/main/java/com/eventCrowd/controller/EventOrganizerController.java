@@ -18,15 +18,24 @@ public class EventOrganizerController {
     EventOrganizerService eventOrganizerService;
 
     @PostMapping("/createEvent")
-    public ResponseEntity<EventOrganizer> createEvent(@RequestBody Map<String, Object> eventDetails) {
-        Long userId = Long.valueOf(eventDetails.get("userId").toString());
-        EventOrganizer eventOrganizer = new EventOrganizer();
-        eventOrganizer.setTitle(eventDetails.get("title").toString());
-        eventOrganizer.setLocation(eventDetails.get("location").toString());
-        eventOrganizer.setEventDate(LocalDate.parse(eventDetails.get("eventDate").toString()));
-        eventOrganizer.setBudget(Double.valueOf(eventDetails.get("budget").toString()));
-        EventOrganizer createdEvent = eventOrganizerService.createEvent(eventOrganizer, userId);
+    public ResponseEntity<EventOrganizer> createEvent(@RequestBody EventOrganizer eventOrganizer) {
+        EventOrganizer createdEvent = eventOrganizerService.createEvent(eventOrganizer);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/updateEvent/{id}")
+    public ResponseEntity<EventOrganizer> updateEvent(@PathVariable("id") Long eventId, @RequestBody EventOrganizer eventOrganizer){
+       EventOrganizer updatedEvent = eventOrganizerService.updateEvent(eventId,eventOrganizer);
+       return new ResponseEntity<>(updatedEvent,HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/deleteEvent/{id}")
+    public ResponseEntity<?> deleteEvent(@PathVariable("id") Long eventId){
+        if (eventOrganizerService.deleteEvent(eventId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

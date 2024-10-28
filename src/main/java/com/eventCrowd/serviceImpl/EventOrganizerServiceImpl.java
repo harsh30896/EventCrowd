@@ -1,13 +1,14 @@
 package com.eventCrowd.serviceImpl;
 
+import com.eventCrowd.entity.Booking;
 import com.eventCrowd.entity.EventOrganizer;
-import com.eventCrowd.entity.User;
+import com.eventCrowd.repository.BookingRepo;
 import com.eventCrowd.repository.EventOrganizerRepo;
-import com.eventCrowd.repository.UserRepo;
 import com.eventCrowd.service.EventOrganizerService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -17,56 +18,41 @@ public class EventOrganizerServiceImpl implements EventOrganizerService {
     EventOrganizerRepo eventOrganizerRepo;
 
     @Autowired
-    UserRepo userRepo;
+    BookingRepo bookingRepo;
+
 
     @Override
-    public EventOrganizer createEvent(EventOrganizer eventOrganizer, Long userId) {
-        Optional<User> organizerOpt = userRepo.findById(userId);
-        if (organizerOpt.isPresent()) {
-            eventOrganizer.setOrganizer(organizerOpt.get());
-        } else {
-            throw new RuntimeException("Organizer not found");
-        }
+    public EventOrganizer createEvent(EventOrganizer eventOrganizer) {
         return eventOrganizerRepo.save(eventOrganizer);
     }
 
     @Override
-    public EventOrganizer getEventById(Long eventId) {
-        return null;
+    public Optional<EventOrganizer> getEventById(Long eventId) {
+        Optional<EventOrganizer> eventOrganizer = eventOrganizerRepo.findById(eventId);
+        return eventOrganizer;
     }
+
 
     @Override
     public EventOrganizer updateEvent(Long eventId, EventOrganizer eventDetails) {
-        return null;
+       if(!eventOrganizerRepo.existsById(eventId)){
+           return null;
+       }
+       eventDetails.setEventId(eventId);
+       return eventOrganizerRepo.save(eventDetails);
     }
 
-    @Override
-    public void deleteEvent(Long eventId) {
+    // In EventOrganizerServiceImpl:
+    @Transactional
+    public boolean deleteEvent(Long eventId) {
+        if (!eventOrganizerRepo.existsById(eventId)) {
+            return false;
+        }
 
+        bookingRepo.deleteByEventId(eventId); // Delete related bookings
+        eventOrganizerRepo.deleteById(eventId); // Then delete the event organizer
+        return true;
     }
 
-    @Override
-    public List<EventOrganizer> getAllEvents() {
-        return List.of();
-    }
 
-    @Override
-    public List<EventOrganizer> getEventsByOrganizer(Long userId) {
-        return List.of();
-    }
-
-    @Override
-    public EventOrganizer addServicesToEvent(Long eventId, List<Long> serviceIds) {
-        return null;
-    }
-
-    @Override
-    public EventOrganizer removeServiceFromEvent(Long eventId, Long serviceId) {
-        return null;
-    }
-
-    @Override
-    public List<EventOrganizer> getEventsByServiceProvider(Long serviceProviderId) {
-        return List.of();
-    }
 }

@@ -19,13 +19,7 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     UserRepo userRepo;
 
     @Override
-    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering, Long userId) {
-        Optional<User> serviceProviderOpt = userRepo.findById(userId);
-        if (serviceProviderOpt.isPresent()) {
-            serviceOffering.setServiceProvider(serviceProviderOpt.get());
-        } else {
-            throw new RuntimeException("User not found");
-        }
+    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering) {
         return serviceOfferingRepo.save(serviceOffering);
     }
 

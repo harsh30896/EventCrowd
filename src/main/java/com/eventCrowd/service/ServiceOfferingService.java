@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ServiceOfferingService {
 
-    ServiceOffering createServiceOffering(ServiceOffering serviceOffering,Long userId);
+    ServiceOffering createServiceOffering(ServiceOffering serviceOffering);
 
     Optional<ServiceOffering> getServiceById(Long serviceId);
 
