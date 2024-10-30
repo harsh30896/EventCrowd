@@ -1,11 +1,11 @@
 package com.eventCrowd.serviceImpl;
 import com.eventCrowd.entity.ServiceOffering;
-import com.eventCrowd.entity.User;
 import com.eventCrowd.repository.ServiceOfferingRepo;
 import com.eventCrowd.repository.UserRepo;
 import com.eventCrowd.service.ServiceOfferingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +34,18 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
 
     @Override
     public ServiceOffering updateServiceOffering(Long serviceId, ServiceOffering serviceOfferingDetails) {
-        return null;
+        if(serviceOfferingRepo.existsById(serviceId)){
+          return serviceOfferingRepo.save(serviceOfferingDetails);
+        }
+        else
+            return null;
     }
 
     @Override
     public void deleteServiceOffering(Long serviceId) {
-
+        if(serviceOfferingRepo.existsById(serviceId)){
+            serviceOfferingRepo.deleteById(serviceId);
+        }
     }
 
     @Override
@@ -50,11 +56,13 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
 
     @Override
     public List<ServiceOffering> getServicesByServiceProvider(Long userId) {
-        return List.of();
+     List<ServiceOffering> serviceOfferingList=serviceOfferingRepo.findAllById(Collections.singleton(userId));
+    return serviceOfferingList;
     }
 
     @Override
     public List<ServiceOffering> getServicesByEvent(Long eventId) {
-        return List.of();
+         List<ServiceOffering> gettingServiceById = serviceOfferingRepo.findAllById(Collections.singleton(eventId));
+         return gettingServiceById;
     }
 }

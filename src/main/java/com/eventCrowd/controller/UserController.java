@@ -1,6 +1,8 @@
 package com.eventCrowd.controller;
 
+import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.User;
+import com.eventCrowd.enums.ResponseMessage;
 import com.eventCrowd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,12 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/createUser")
-    public ResponseEntity<User> createUser(@RequestBody User user){
+    public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
         if (user.getRole() == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST); // Role must be provided
+            return new ResponseEntity<>(new ApiResponse(ResponseMessage.CREATION_FAILED.getMessage()), HttpStatus.BAD_REQUEST); // Role must be provided
         }
         User createdUser = userService.saveUser(user);
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage()), HttpStatus.CREATED);
     }
 
     @PutMapping("/updateUser/{id}")

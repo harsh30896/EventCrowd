@@ -4,7 +4,6 @@ import com.eventCrowd.entity.EventOrganizer;
 import com.eventCrowd.entity.ServiceOffering;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 public class BookingDto {

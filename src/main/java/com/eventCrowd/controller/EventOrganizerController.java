@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/EventOrganizer")
@@ -38,5 +37,8 @@ public class EventOrganizerController {
         }
     }
 
-
+    @GetMapping("/getEventsById/{id}")
+    public Optional<EventOrganizer> getEventsPlanned(@PathVariable("id") Long eventId){
+      return eventOrganizerService.getEventById(eventId);
+    }
 }

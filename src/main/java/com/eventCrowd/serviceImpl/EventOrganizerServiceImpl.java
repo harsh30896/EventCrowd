@@ -48,7 +48,6 @@ public class EventOrganizerServiceImpl implements EventOrganizerService {
         if (!eventOrganizerRepo.existsById(eventId)) {
             return false;
         }
-
         bookingRepo.deleteByEventId(eventId); // Delete related bookings
         eventOrganizerRepo.deleteById(eventId); // Then delete the event organizer
         return true;
