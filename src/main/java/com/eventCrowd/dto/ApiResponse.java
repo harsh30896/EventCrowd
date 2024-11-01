@@ -1,17 +1,19 @@
 package com.eventCrowd.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+
 public class ApiResponse {
     private String message;
-
-    public ApiResponse(String message) {
+    private Boolean status;
+    public ApiResponse(String message,Boolean status) {
         this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+        this.status=status;
     }
 }

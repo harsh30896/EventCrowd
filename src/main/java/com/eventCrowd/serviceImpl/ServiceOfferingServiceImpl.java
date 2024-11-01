@@ -1,5 +1,8 @@
 package com.eventCrowd.serviceImpl;
+import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.ServiceOffering;
+import com.eventCrowd.enums.ResponseMessage;
+import com.eventCrowd.exceptionHandler.ResourceNotFoundException;
 import com.eventCrowd.repository.ServiceOfferingRepo;
 import com.eventCrowd.repository.UserRepo;
 import com.eventCrowd.service.ServiceOfferingService;
@@ -19,8 +22,10 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     UserRepo userRepo;
 
     @Override
-    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering) {
-        return serviceOfferingRepo.save(serviceOffering);
+    public ApiResponse createServiceOffering(ServiceOffering serviceOffering) {
+       serviceOfferingRepo.save(serviceOffering);
+        ApiResponse apiResponse=new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage(), true);
+        return  apiResponse;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
       if(serviceOffering.isPresent()){
           return serviceOffering;
       }
-      return null;
+      return Optional.empty();
     }
 
     @Override
@@ -45,6 +50,8 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     public void deleteServiceOffering(Long serviceId) {
         if(serviceOfferingRepo.existsById(serviceId)){
             serviceOfferingRepo.deleteById(serviceId);
+        }else{
+            throw new ResourceNotFoundException("Service Not Found With Given Service Id :"+serviceId);
         }
     }
 

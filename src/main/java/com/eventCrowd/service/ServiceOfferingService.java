@@ -1,5 +1,6 @@
 package com.eventCrowd.service;
 
+import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.ServiceOffering;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 public interface ServiceOfferingService {
 
-    ServiceOffering createServiceOffering(ServiceOffering serviceOffering);
+     ApiResponse createServiceOffering(ServiceOffering serviceOffering);
 
     Optional<ServiceOffering> getServiceById(Long serviceId);
 

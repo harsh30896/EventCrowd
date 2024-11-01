@@ -4,7 +4,6 @@ import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.User;
 import com.eventCrowd.enums.ResponseMessage;
 import com.eventCrowd.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +14,24 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    @Autowired
-    UserService userService;
+    private UserService userService;
+    public UserController(UserService userService){
+        this.userService=userService;
+    }
 
     @PostMapping("/createUser")
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
         if (user.getRole() == null) {
-            return new ResponseEntity<>(new ApiResponse(ResponseMessage.CREATION_FAILED.getMessage()), HttpStatus.BAD_REQUEST); // Role must be provided
+            return new ResponseEntity<>(new ApiResponse(ResponseMessage.CREATION_FAILED.getMessage(),true), HttpStatus.BAD_REQUEST); // Role must be provided
         }
-        User createdUser = userService.saveUser(user);
-        return new ResponseEntity<>(new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage()), HttpStatus.CREATED);
+        userService.saveUser(user);
+        return new ResponseEntity<>(new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage(),true), HttpStatus.CREATED);
     }
 
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId,User user) {
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable("id") Long userId,@RequestBody User user) {
         User updatedUser = userService.updateUser(user,userId);
-        return new ResponseEntity<>(updatedUser,HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse(ResponseMessage.UPDATE_SUCCESS.getMessage(),true),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
