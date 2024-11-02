@@ -48,6 +48,7 @@ public class UserController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
     // checking git
+    // checking for sts
 
     @GetMapping("/getMapping")
     public List<User> getAllUsers(){
