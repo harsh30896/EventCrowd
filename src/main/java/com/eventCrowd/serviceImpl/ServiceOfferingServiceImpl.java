@@ -1,7 +1,7 @@
 package com.eventCrowd.serviceImpl;
 import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.ServiceOffering;
-import com.eventCrowd.enums.ResponseMessage;
+import com.eventCrowd.enums.UserResponseMessage;
 import com.eventCrowd.exceptionHandler.ResourceNotFoundException;
 import com.eventCrowd.repository.ServiceOfferingRepo;
 import com.eventCrowd.repository.UserRepo;
@@ -24,7 +24,7 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     @Override
     public ApiResponse createServiceOffering(ServiceOffering serviceOffering) {
        serviceOfferingRepo.save(serviceOffering);
-        ApiResponse apiResponse=new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage(), true);
+        ApiResponse apiResponse=new ApiResponse(UserResponseMessage.USER_CREATI0N.getMessage(), true);
         return  apiResponse;
     }
 

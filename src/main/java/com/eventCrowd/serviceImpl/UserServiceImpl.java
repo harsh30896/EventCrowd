@@ -1,7 +1,9 @@
 package com.eventCrowd.serviceImpl;
 
 
+import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.User;
+import com.eventCrowd.exceptionHandler.ResourceNotFoundException;
 import com.eventCrowd.repository.UserRepo;
 import com.eventCrowd.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,14 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
+    public UserServiceImpl(UserRepo userRepo){
+        this.userRepo=userRepo;
+    }
 
     @Override
-    public User saveUser(User user) {
-       return  userRepo.save(user);
+    public void saveUser(User user) {
+        userRepo.save(user);
     }
 
     @Override
@@ -33,16 +37,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user,Long userId) {
-        if(!userRepo.existsById(userId)){
-            return null;
+    public Boolean updateUser(User user, Long userId) {
+        Optional<User> existingUser= userRepo.findById(userId);
+        if(existingUser.isEmpty())
+        {
+         throw new ResourceNotFoundException("User Not Found With the Given Id: "+userId);
         }
-        user.setUserId(userId);
-        return userRepo.save(user);
+        User dbUser=existingUser.get();
+        if(user.getName() != null){
+            dbUser.setName(user.getName());
+        }
+        if(user.getRole() != null){
+            dbUser.setRole(user.getRole());
+        }
+
+        if(user.getEmail() != null){
+            dbUser.setEmail(user.getEmail());
+        }
+        if(user.getPassword() != null){
+            dbUser.setPassword(user.getPassword());
+        }
+        if(user.getLocation() != null){
+            dbUser.setLocation(user.getLocation());
+        }
+        userRepo.save(dbUser);
+        return true;
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepo.deleteById(id);
     }
+
 }

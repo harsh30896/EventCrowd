@@ -2,7 +2,7 @@ package com.eventCrowd.controller;
 
 import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.User;
-import com.eventCrowd.enums.ResponseMessage;
+import com.eventCrowd.enums.UserResponseMessage;
 import com.eventCrowd.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +22,24 @@ public class UserController {
     @PostMapping("/createUser")
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
         if (user.getRole() == null) {
-            return new ResponseEntity<>(new ApiResponse(ResponseMessage.CREATION_FAILED.getMessage(),true), HttpStatus.BAD_REQUEST); // Role must be provided
+            return new ResponseEntity<>(new ApiResponse(UserResponseMessage.CREATION_FAILED.getMessage(),false), HttpStatus.BAD_REQUEST); // Role must be provided
         }
         userService.saveUser(user);
-        return new ResponseEntity<>(new ApiResponse(ResponseMessage.USER_CREATI0N.getMessage(),true), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse(UserResponseMessage.USER_CREATI0N.getMessage(),true), HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateUser/{id}")
+    @PatchMapping("/updateUser/{id}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable("id") Long userId,@RequestBody User user) {
-        User updatedUser = userService.updateUser(user,userId);
-        return new ResponseEntity<>(new ApiResponse(ResponseMessage.UPDATE_SUCCESS.getMessage(),true),HttpStatus.OK);
+        ApiResponse newResponse=new ApiResponse();
+        Boolean updateResponse = userService.updateUser(user,userId);
+       if(updateResponse==true){
+           newResponse.setStatus(true);
+           newResponse.setMessage("success");
+           return new ResponseEntity<>(newResponse,HttpStatus.OK);
+       }
+       newResponse.setMessage("failed");
+       newResponse.setStatus(false);
+       return new ResponseEntity<>(newResponse,HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -39,6 +47,7 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
+    // checking git
 
     @GetMapping("/getMapping")
     public List<User> getAllUsers(){

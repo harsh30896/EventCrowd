@@ -2,7 +2,7 @@ package com.eventCrowd.controller;
 
 import com.eventCrowd.dto.ApiResponse;
 import com.eventCrowd.entity.ServiceOffering;
-import com.eventCrowd.enums.ResponseMessage;
+import com.eventCrowd.enums.UserResponseMessage;
 import com.eventCrowd.service.ServiceOfferingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class ServiceOfferingController {
     @PostMapping("/createService")
     public ResponseEntity<ApiResponse> createServiceOffering(@RequestBody ServiceOffering serviceOffering) {
         serviceOfferingService.createServiceOffering(serviceOffering);
-        return new ResponseEntity<>(new ApiResponse(ResponseMessage.CREATE_SUCCESS.getMessage(),true), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse(UserResponseMessage.USER_CREATI0N.getMessage(),true), HttpStatus.CREATED);
     }
 
     @GetMapping("/getAllOffering")
@@ -32,13 +32,13 @@ public class ServiceOfferingController {
     @PutMapping("/updateServiceOffering")
     public ResponseEntity<ApiResponse> updateServiceOffering(@PathVariable("id") Long serviceId,@RequestBody ServiceOffering serviceOffering){
          serviceOfferingService.updateServiceOffering(serviceId,serviceOffering);
-        return new ResponseEntity<>(new ApiResponse(ResponseMessage.UPDATE_SUCCESS.getMessage(),true),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ApiResponse(UserResponseMessage.UPDATE_SUCCESS.getMessage(),true),HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/deleteServiceOffering/{id}")
     public ResponseEntity<ApiResponse> deleteServiceOffering(@PathVariable("id") Long serviceId){
          serviceOfferingService.deleteServiceOffering(serviceId);
-         return new ResponseEntity<>(new ApiResponse(ResponseMessage.DELETE_SUCCESS.getMessage(),true),HttpStatus.OK);
+         return new ResponseEntity<>(new ApiResponse(UserResponseMessage.DELETE_SUCCESS.getMessage(),true),HttpStatus.OK);
     }
 
 }
