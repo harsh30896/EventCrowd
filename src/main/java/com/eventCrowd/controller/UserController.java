@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping("/createUser")
     public ResponseEntity<ApiResponse> createUser(@RequestBody User user){
         if (user.getRole() == null) {
-            return new ResponseEntity<>(new ApiResponse(UserResponseMessage.CREATION_FAILED.getMessage(),false), HttpStatus.BAD_REQUEST); // Role must be provided
+            return new ResponseEntity<>(new ApiResponse(UserResponseMessage.CREATION_FAILED.getMessage(),false), HttpStatus.BAD_REQUEST); 
         }
         userService.saveUser(user);
         return new ResponseEntity<>(new ApiResponse(UserResponseMessage.USER_CREATI0N.getMessage(),true), HttpStatus.CREATED);
@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> updateUser(@PathVariable("id") Long userId,@RequestBody User user) {
         ApiResponse newResponse=new ApiResponse();
         Boolean updateResponse = userService.updateUser(user,userId);
-       if(updateResponse==true){
+       if(updateResponse){
            newResponse.setStatus(true);
            newResponse.setMessage("success");
            return new ResponseEntity<>(newResponse,HttpStatus.OK);
@@ -43,16 +43,18 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteUser(@PathVariable Long userId){
-        userService.deleteUser(userId);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable("id") Long userId){
+    	if(userService.deleteUser(userId)) {
+    		return new ResponseEntity<>(new ApiResponse(UserResponseMessage.DELETE_SUCCESS.getMessage(),true),HttpStatus.OK);
+    		}
+       return new ResponseEntity<>(new ApiResponse(UserResponseMessage.DELETE_FAILED.getMessage(),true),HttpStatus.NOT_FOUND);
     }
-    // checking git
-    // checking for sts
+
 
     @GetMapping("/getMapping")
     public List<User> getAllUsers(){
         List<User> allUser = userService.findAllUsers();
         return allUser;
     }
+    
 }
